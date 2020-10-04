@@ -4,33 +4,32 @@ import sys # In order to terminate the program
 
 serverSocket = socket(AF_INET, SOCK_STREAM)
 #Prepare a server socket
-#Fill in start
-#Fill in end
+port = 6789
+serverSocket.bind(('', port))
+serverSocket.listen()
 
 while True:
- #Establish the connection
- print('Ready to serve...')
- connectionSocket, addr = #Fill in start #Fill in end
- try:
-    message = #Fill in start #Fill in end
-    filename = message.split()[1]
-    f = open(filename[1:])
-    outputdata = #Fill in start #Fill in end
- #Send one HTTP header line into socket
- #Fill in start
- #Fill in end
- #Send the content of the requested file to the client
-    for i in range(0, len(outputdata)):
-        connectionSocket.send(outputdata[i].encode())
-    connectionSocket.send("\r\n".encode())
-    connectionSocket.close()
- except IOError:
- #Send response message for file not found
- #Fill in start 
- #Fill in end
- #Close client socket
- #Fill in start
- #Fill in end
+    #Establish the connection
+    print('Ready to serve...')
+    connectionSocket, addr = serverSocket.accept()
+    try:
+        message = connectionSocket.recv(1024)
+        filename = message.split()[1]
+        print('filename: ', filename)
+        f = open(filename[1:])
+        outputdata = f.read()
+        #Send one HTTP header line into socket
+        connectionSocket.send("HTTP/1.1 200 OK\r\n\r\n".encode())
+        #Send the content of the requested file to the client
+        for i in range(0, len(outputdata)):
+            connectionSocket.send(outputdata[i].encode())
+        connectionSocket.send("\r\n".encode())
+        connectionSocket.close()
+    except IOError:
+        #Send response message for file not found
+        connectionSocket.send("HTTP/1.1 404 Not Found\r\n\r\n".encode())
+        #Close client socket
+        connectionSocket.close()
 serverSocket.close()
 
-sys.exit()#Terminate the program after sending the corresponding data 
+sys.exit()#Terminate the program after sending the corresponding data

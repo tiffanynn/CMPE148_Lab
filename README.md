@@ -6,3 +6,4 @@ HOW TO RUN
 4. Open command prompt and type in "ipconfig /all"
 5. Find IPv4 Address under "Wireless LAN adapter Wi-Fi"
 6. Go to browser on a different machine and go to "(IPv4 Address):6789/index.html"
+7. Replace "index.html" with something else like "inde.html" and browser should show HTTP ERROR 404
